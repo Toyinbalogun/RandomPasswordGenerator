@@ -1,38 +1,57 @@
 //====================================================//
-//TO DO
+//TO DO: Create a generatepassword func that returns a random password, made of the users seleted prefs
 function generatePassword(){
-  let lowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-  let upperCase = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-  let num = [0,1,2,3,4,5,6,7,8,9];
-  let specialChar = ["!","@","#","$","%","^","&","*","(",")","_","+","=","-"];
+  let upperCaseOptions = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let lowerCaseOptions = "abcdefghijklmnopqrstuvwxyz";
+  let numOptions = "0123456789";
+  let specialCharOptions = '!"#$%&\'<=>?@[\\]^_`{|}~()*+,-./:;';
+  let passwordType = "";
+  let ranPass = "";
+  let selectedTypeIncluded= [];
+  let selectedRanPass = "";
 
-  let userWelcome = alert(`Welcome there User, Click "Ok" to Begin`);
-  let passLen = prompt("Password Length:");
-
-  let generatedPass = []; //create an empty array to add randomized char to
   
-  if (passLen >= 8 && passLen<=128 && isNaN(passLen) == false){
-    let confirmLc = confirm("Do you want a Lower case character?");
-    let confirmUc = confirm("Do you want a Upper case character?");
-    let confirmNum = confirm("Do you want a Number?");
-    let confirmSc = confirm("Do you want a Special character?");
-    
-    if(confirmLc) 
-      generatedPass.push(lowerCase);
-    
-    else if(confirmUc)
-      generatedPass.push(upperCase);
+  let userWelcome = alert(`Welcome there User, Click "Ok" to Begin`);
+  
+  let passLen
+  do {//loop until user enters correct input
+    passLen = prompt("Please enter the length of your password(a number 8-128): ");
+  } while (passLen < 8 || passLen >128 || isNaN(passLen));
 
-    else if(confirmNum)
-      generatedPass.push(num);
-    
-    else if(confirmSc)
-      generatedPass.push(specialChar);
+  let lowerCase = confirm("Do you want a lowercase in your password?");
+  let upperCase = confirm("Do you want a uppercase in your password?");
+  let specialChar = confirm("Do you want a special character in your password?");
+  let num = confirm("Do you want a number in your password?");
+
+  //if a type is selected, it should get added to the password type string
+  if(lowerCase){
+    passwordType+= lowerCase;
   }
-  else{
-    alert("Please select a password lenght between 8 and 128 characters or Enter a number ")
+  if(upperCase){
+    passwordType += upperCase;
   }
+  if(specialChar){
+    passwordType += specialChar;
+  }
+  if(num){
+    passwordType += num;
+  }
+  if((lowerCase == false ) && (upperCase == false) && (specialChar == false) && (num == false)){
+    alert("You have made zero selections. \nPlease choose at least one type of character");
+    // console.log("You have made zero selections. \nPlease choose at least one type of character");
+  }
+
+  for (let i=0;i <= passLen; i++){
+    ranPass += passwordType.charAt(Math.floor(Math.random() * passwordType.length));
+  }
+  if (selectedTypeIncluded.includes(ranPass)){
+    selectedTypeIncluded.push(ranPass);
+  }
+  selectedRanPass += ranPass[Math.floor(Math.random() * ranPass.length)];
+  // return ranPass;
+  return selectedRanPass;
 }
+
 // Assignment Code
 let generateBtn = document.querySelector("#generate");
 
